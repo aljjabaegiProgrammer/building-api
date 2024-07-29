@@ -8,9 +8,15 @@ spring:
       connection-timeout: 3000
       validation-timeout: 3000
       max-lifetime: 240000
-  #
   jpa:
     open-in-view: false
+  messages:
+    basename: messages/message
+    encoding: UTF-8
+    cache-duration: 30
+    always-use-message-format: true
+    use-code-as-default-message: true
+    fallback-to-system-locale: true
 server:
   port: 13713
   servlet:

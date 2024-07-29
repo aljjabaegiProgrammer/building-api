@@ -2,11 +2,17 @@ package com.geonlee.api.domin.member;
 
 import com.geonlee.api.common.response.ItemResponse;
 import com.geonlee.api.common.response.ItemsResponse;
+import com.geonlee.api.config.locale.LocaleConfig;
+import com.geonlee.api.config.message.MessageConfig;
 import com.geonlee.api.domin.member.record.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Locale;
 
 /**
  * @author GEONLEE
@@ -17,13 +23,14 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MessageConfig messageConfig;
 
     @GetMapping(value = "/members/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<MemberSearchResponse>builder()
-                        .status(200)
-                        .message("데이터를 조회하는데 성공하였습니다.")
+                        .status(messageConfig.getMessage("SUCCESS.SEARCH.CODE"))
+                        .message(messageConfig.getMessage("SUCCESS.SEARCH.MESSAGE"))
                         .item(memberService.getMemberById(memberId))
                         .build());
     }
@@ -32,8 +39,8 @@ public class MemberController {
     public ResponseEntity<ItemsResponse<MemberSearchResponse>> getMembers() {
         return ResponseEntity.ok()
                 .body(ItemsResponse.<MemberSearchResponse>builder()
-                        .status(200)
-                        .message("데이터를 조회하는데 성공하였습니다.")
+                        .status(messageConfig.getMessage("SUCCESS.SEARCH.CODE"))
+                        .message(messageConfig.getMessage("SUCCESS.SEARCH.MESSAGE"))
                         .items(memberService.getMembers())
                         .build());
     }

@@ -1,8 +1,12 @@
-package com.geonlee.api.config.message;
+package com.geonlee.api.config.locale;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
+import io.micrometer.common.util.StringUtils;
+import jakarta.annotation.Nonnull;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.util.Locale;
 
@@ -11,15 +15,18 @@ import java.util.Locale;
  * @since 2024-07-29
  */
 @Configuration
-@RequiredArgsConstructor
-public class MessageConfig {
-    private final MessageSource messageSource;
-
-    public String getMessage(String key, Locale locale) {
-        return messageSource.getMessage(key, null, locale);
+public class LocaleConfig extends AcceptHeaderLocaleResolver {
+    @Bean
+    public LocaleResolver localeResolver() {
+        AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
+        resolver.setDefaultLocale(Locale.KOREA);
+        return resolver;
     }
 
-    public String getCode(String key) {
-        return messageSource.getMessage(key, null, Locale.KOREA);
+    @Override
+    @Nonnull
+    public Locale resolveLocale(HttpServletRequest request) {
+        String acceptLanguage = request.getHeader("Accept-Language");
+        return (StringUtils.isEmpty(acceptLanguage)) ? Locale.getDefault() : Locale.forLanguageTag(acceptLanguage);
     }
 }
