@@ -1,12 +1,12 @@
 package com.geonlee.api.domin.member;
 
+import com.geonlee.api.common.response.ItemResponse;
+import com.geonlee.api.common.response.ItemsResponse;
 import com.geonlee.api.domin.member.record.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author GEONLEE
@@ -19,15 +19,23 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping(value = "/members/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberSearchResponse> getMemberById(@PathVariable("memberId") String memberId) {
+    public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok()
-                .body(memberService.getMemberById(memberId));
+                .body(ItemResponse.<MemberSearchResponse>builder()
+                        .status(200)
+                        .message("데이터를 조회하는데 성공하였습니다.")
+                        .item(memberService.getMemberById(memberId))
+                        .build());
     }
 
     @GetMapping(value = "/members", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MemberSearchResponse>> getMembers() {
+    public ResponseEntity<ItemsResponse<MemberSearchResponse>> getMembers() {
         return ResponseEntity.ok()
-                .body(memberService.getMembers());
+                .body(ItemsResponse.<MemberSearchResponse>builder()
+                        .status(200)
+                        .message("데이터를 조회하는데 성공하였습니다.")
+                        .items(memberService.getMembers())
+                        .build());
     }
 
     @PostMapping(value = "/member"
