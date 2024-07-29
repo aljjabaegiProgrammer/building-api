@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: api
+  profiles:
+    active: dev
+  datasource:
+    hikari:
+      connection-timeout: 3000
+      validation-timeout: 3000
+      max-lifetime: 240000
+  #
+  jpa:
+    open-in-view: false
+server:
+  port: 13713
+  servlet:
+    context-path: /my-api
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: "jdbc:postgresql://localhost:15432/test_db"
+    driver-class-name: "org.postgresql.Driver"
+    username: "aljjabaegi"
+    password: "aljjabaegi123!@#"
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
