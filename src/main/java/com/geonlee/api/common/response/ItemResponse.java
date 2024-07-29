@@ -8,7 +8,7 @@ import lombok.Builder;
  */
 @Builder
 public record ItemResponse<T>(
-        Integer status,
+        String status,
         String message,
         T item
 ) {

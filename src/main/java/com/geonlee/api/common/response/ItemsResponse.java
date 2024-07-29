@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Builder
 public record ItemsResponse<T>(
-        Integer status,
+        String status,
         String message,
         List<T> items
 ) {
