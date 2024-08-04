@@ -43,22 +43,33 @@ public class MemberController {
 
     @PostMapping(value = "/member"
             , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberCreateResponse> createMember(@RequestBody MemberCreateResponse parameter) {
+    public ResponseEntity<ItemResponse<MemberCreateResponse>> createMember(@RequestBody MemberCreateRequest parameter) {
         return ResponseEntity.ok()
-                .body(new MemberCreateResponse(null, null, null, null));
+                .body(ItemResponse.<MemberCreateResponse>builder()
+                        .status(messageConfig.getCode(NormalCode.CREATE_SUCCESS))
+                        .message(messageConfig.getMessage(NormalCode.CREATE_SUCCESS))
+                        .item(memberService.createMember(parameter))
+                        .build());
     }
 
     @PutMapping(value = "/member"
             , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberModifyResponse> modifyMember(@RequestBody MemberModifyRequest parameter) {
+    public ResponseEntity<ItemResponse<MemberModifyResponse>> modifyMember(@RequestBody MemberModifyRequest parameter) {
         return ResponseEntity.ok()
-                .body(new MemberModifyResponse(null, null, null));
+                .body(ItemResponse.<MemberModifyResponse>builder()
+                        .status(messageConfig.getCode(NormalCode.MODIFY_SUCCESS))
+                        .message(messageConfig.getMessage(NormalCode.MODIFY_SUCCESS))
+                        .item(memberService.modifyMember(parameter))
+                        .build());
     }
 
-    @DeleteMapping(value = "/member"
-            , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> deleteMember(@RequestBody MemberDeleteRequest parameter) {
+    @DeleteMapping(value = "/member/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ItemResponse<Long>> deleteMember(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok()
-                .body(1L);
+                .body(ItemResponse.<Long>builder()
+                        .status(messageConfig.getCode(NormalCode.MODIFY_SUCCESS))
+                        .message(messageConfig.getMessage(NormalCode.MODIFY_SUCCESS))
+                        .item(memberService.deleteMember(memberId))
+                        .build());
     }
 }

@@ -39,6 +39,8 @@ spring:
     hikari:
       minimum-idle: 2
       maximum-pool-size: 2
+  jpa:
+    show-sql: true
 
 ---
 spring:

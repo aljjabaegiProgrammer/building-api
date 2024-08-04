@@ -1,5 +1,7 @@
 package com.geonlee.api.entity;
 
+import com.geonlee.api.domin.member.record.MemberModifyRequest;
+import com.geonlee.api.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,8 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import org.springframework.data.domain.Persistable;
 
 /**
  * Member Entity
@@ -23,7 +24,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table
 @Entity(name = "member")
-public class Member {
+public class Member extends BaseEntity implements Persistable<String> {
 
     @Id
     @Column(name = "member_id")
@@ -35,30 +36,24 @@ public class Member {
     @Column(name = "member_nm")
     private String memberName;
 
-    @Column(name = "cellphone")
-    private String cellphone;
-
-    @Column(name = "birth_dt")
-    private LocalDate birthDate;
-
-    @Column(name = "age")
-    private Integer age;
-
-    @Column(name = "height")
-    private Double height;
-
     @Column(name = "use_yn")
     private String useYn;
 
-    @Column(name = "atk")
-    private String accessToken;
+    @Column(name = "authority_cd")
+    private String authorityCode;
 
-    @Column(name = "rtk")
-    private String refreshToken;
+    @Override
+    public String getId() {
+        return this.memberId;
+    }
 
-    @Column(name = "pw_update_dt")
-    private LocalDate passwordUpdateDate;
+    @Override
+    public boolean isNew() {
+        return getCreateDate() == null;
+    }
 
-    @Column(name = "login_attempts")
-    private Integer loginAttemptsCount;
+    public void updateFromRecord(MemberModifyRequest parameter) {
+        this.memberName = parameter.memberName();
+        this.useYn = parameter.useYn();
+    }
 }

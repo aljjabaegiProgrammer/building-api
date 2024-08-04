@@ -8,7 +8,9 @@ public enum ErrorCode implements ResponseCode {
     SERVICE_ERROR("ERR_SV_01"),
     DATA_PROCESSING_ERROR("ERR_SV_02"),
     INVALID_PARAMETER("ERR_CE_01"),
-    NO_DATA("ERR_DT_01");
+    NO_DATA("ERR_DT_01"),
+    EXISTS_DATA("ERR_DT_02"),
+    SQL_ERROR("ERR_SQ_01");
 
     private final String code;
 

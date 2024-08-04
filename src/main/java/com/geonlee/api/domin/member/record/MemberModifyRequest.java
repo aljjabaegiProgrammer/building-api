@@ -6,6 +6,7 @@ package com.geonlee.api.domin.member.record;
  */
 public record MemberModifyRequest(
         String memberId,
+        String useYn,
         String memberName
 ) {
 }

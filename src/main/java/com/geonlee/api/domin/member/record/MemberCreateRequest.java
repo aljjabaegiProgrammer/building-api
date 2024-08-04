@@ -6,6 +6,8 @@ package com.geonlee.api.domin.member.record;
  */
 public record MemberCreateRequest(
         String memberId,
+        String password,
+        String useYn,
         String memberName
 ) {
 }
