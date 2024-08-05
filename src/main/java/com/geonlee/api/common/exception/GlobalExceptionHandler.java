@@ -1,14 +1,13 @@
 package com.geonlee.api.common.exception;
 
 import com.geonlee.api.common.code.ErrorCode;
+import com.geonlee.api.common.exception.custom.ServiceException;
 import com.geonlee.api.common.response.ErrorResponse;
 import com.geonlee.api.config.message.MessageConfig;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,7 +23,6 @@ import java.sql.SQLException;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     private final MessageConfig messageConfig;
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -42,8 +40,13 @@ public class GlobalExceptionHandler {
         return generateErrorResponse(ErrorCode.EXISTS_DATA, e);
     }
 
+    @ExceptionHandler(value = {ServiceException.class})
+    public ResponseEntity<ErrorResponse> handleServiceException(ServiceException e) {
+        return generateErrorResponse(e.errorCode(), e);
+    }
+
     private ResponseEntity<ErrorResponse> generateErrorResponse(ErrorCode errorCode, Exception e) {
-        LOGGER.error(errorCode.messageCode(), e);
+        log.error(errorCode.messageCode(), e);
         return ResponseEntity.ok()
                 .body(ErrorResponse.builder()
                         .status(messageConfig.getCode(errorCode))

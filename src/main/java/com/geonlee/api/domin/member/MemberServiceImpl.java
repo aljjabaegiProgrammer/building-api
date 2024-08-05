@@ -1,15 +1,17 @@
 package com.geonlee.api.domin.member;
 
+import com.geonlee.api.common.code.ErrorCode;
+import com.geonlee.api.common.exception.custom.ServiceException;
 import com.geonlee.api.domin.member.record.*;
 import com.geonlee.api.entity.Member;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author GEONLEE
@@ -20,9 +22,6 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-
-    @PersistenceContext    // EntityManagerFactory가 DI 할 수 있도록 어노테이션 설정
-    private EntityManager em;
 
     @Override
     public MemberSearchResponse getMemberById(String memberId) {
@@ -52,6 +51,10 @@ public class MemberServiceImpl implements MemberService {
     public MemberCreateResponse createMember(MemberCreateRequest parameter) {
         if (memberRepository.existsById(parameter.memberId())) {
             throw new EntityExistsException("이미 존재하는 ID 입니다. -> " + parameter.memberId());
+        }
+        if (StringUtils.isEmpty(parameter.memberName())
+                || !Pattern.compile("^[가-힣a-zA-Z]+$").matcher(parameter.memberName()).matches()) {
+            throw new ServiceException(ErrorCode.INVALID_PARAMETER, "이름은 한글/영문만 가능합니다.");
         }
         Member newMember = Member.builder()
                 .memberId(parameter.memberId())
