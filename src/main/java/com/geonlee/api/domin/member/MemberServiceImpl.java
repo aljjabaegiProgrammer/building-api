@@ -1,17 +1,13 @@
 package com.geonlee.api.domin.member;
 
-import com.geonlee.api.common.code.ErrorCode;
-import com.geonlee.api.common.exception.custom.ServiceException;
 import com.geonlee.api.domin.member.record.*;
 import com.geonlee.api.entity.Member;
-import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @author GEONLEE
@@ -30,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
         return MemberSearchResponse.builder()
                 .memberId(memberEntity.getMemberId())
                 .memberName(memberEntity.getMemberName())
+                .useYn(memberEntity.getUseYn())
                 .createDate(memberEntity.getCreateDate())
                 .updateDate(memberEntity.getUpdateDate())
                 .build();
@@ -41,6 +38,7 @@ public class MemberServiceImpl implements MemberService {
                 .map(memberEntity -> MemberSearchResponse.builder()
                         .memberId(memberEntity.getMemberId())
                         .memberName(memberEntity.getMemberName())
+                        .useYn(memberEntity.getUseYn())
                         .createDate(memberEntity.getCreateDate())
                         .updateDate(memberEntity.getUpdateDate())
                         .build())
