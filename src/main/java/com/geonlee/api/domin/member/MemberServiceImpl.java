@@ -5,6 +5,7 @@ import com.geonlee.api.entity.Member;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,17 +20,14 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final MemberMapper memberMapper;
+
     @Override
     public MemberSearchResponse getMemberById(String memberId) {
         Member memberEntity = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("회원 ID 가 존재하지 않습니다. -> " + memberId));
-        return MemberSearchResponse.builder()
-                .memberId(memberEntity.getMemberId())
-                .memberName(memberEntity.getMemberName())
-                .useYn(memberEntity.getUseYn())
-                .createDate(memberEntity.getCreateDate())
-                .updateDate(memberEntity.getUpdateDate())
-                .build();
+
+        return memberMapper.toRecord(memberEntity);
     }
 
     @Override
