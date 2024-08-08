@@ -5,6 +5,7 @@ import com.geonlee.api.common.response.ItemResponse;
 import com.geonlee.api.common.response.ItemsResponse;
 import com.geonlee.api.config.message.MessageConfig;
 import com.geonlee.api.domin.member.record.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class MemberController {
 
     @PostMapping(value = "/member"
             , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemResponse<MemberCreateResponse>> createMember(@RequestBody MemberCreateRequest parameter) {
+    public ResponseEntity<ItemResponse<MemberCreateResponse>> createMember(@RequestBody @Valid MemberCreateRequest parameter) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<MemberCreateResponse>builder()
                         .status(messageConfig.getCode(NormalCode.CREATE_SUCCESS))

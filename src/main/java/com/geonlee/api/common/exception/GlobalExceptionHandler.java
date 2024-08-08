@@ -9,10 +9,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.security.InvalidParameterException;
 import java.sql.SQLException;
+import java.util.StringJoiner;
 
 /**
  * @author GEONLEE
@@ -43,6 +46,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ServiceException.class})
     public ResponseEntity<ErrorResponse> handleServiceException(ServiceException e) {
         return generateErrorResponse(e.errorCode(), e);
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+        StringJoiner stringJoiner = new StringJoiner(", ");
+        e.getFieldErrors().forEach(fieldError -> {
+            stringJoiner.add(fieldError.getField() + ": " + fieldError.getDefaultMessage());
+        });
+        return generateErrorResponse(ErrorCode.INVALID_PARAMETER, new InvalidParameterException(stringJoiner.toString()));
     }
 
     private ResponseEntity<ErrorResponse> generateErrorResponse(ErrorCode errorCode, Exception e) {

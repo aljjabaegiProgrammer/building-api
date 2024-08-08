@@ -52,10 +52,6 @@ public class MemberServiceImpl implements MemberService {
         if (memberRepository.existsById(parameter.memberId())) {
             throw new EntityExistsException("이미 존재하는 ID 입니다. -> " + parameter.memberId());
         }
-        if (StringUtils.isEmpty(parameter.memberName())
-                || !Pattern.compile("^[가-힣a-zA-Z]+$").matcher(parameter.memberName()).matches()) {
-            throw new ServiceException(ErrorCode.INVALID_PARAMETER, "이름은 한글/영문만 가능합니다.");
-        }
         Member newMember = Member.builder()
                 .memberId(parameter.memberId())
                 .password(parameter.password())
