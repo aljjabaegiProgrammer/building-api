@@ -6,7 +6,9 @@ import com.geonlee.api.common.response.ItemsResponse;
 import com.geonlee.api.config.message.MessageConfig;
 import com.geonlee.api.domin.member.record.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,7 +27,9 @@ public class MemberController {
     private final MessageConfig messageConfig;
 
     @GetMapping(value = "/members/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(@PathVariable("memberId") String memberId) {
+    public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(@PathVariable("memberId")
+                                                                            @Pattern (regexp = "^[zA-Z0-9]+$")
+                                                                            @Length(min = 5, max = 30) String memberId) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<MemberSearchResponse>builder()
                         .status(messageConfig.getCode(NormalCode.SEARCH_SUCCESS))

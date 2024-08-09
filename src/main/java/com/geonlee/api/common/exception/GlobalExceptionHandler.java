@@ -6,6 +6,7 @@ import com.geonlee.api.common.response.ErrorResponse;
 import com.geonlee.api.config.message.MessageConfig;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -49,12 +50,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> handleMethodArgumentInValid(MethodArgumentNotValidException e) {
         StringJoiner stringJoiner = new StringJoiner(", ");
         e.getFieldErrors().forEach(fieldError -> {
             stringJoiner.add(fieldError.getField() + ": " + fieldError.getDefaultMessage());
         });
         return generateErrorResponse(ErrorCode.INVALID_PARAMETER, new InvalidParameterException(stringJoiner.toString()));
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolation(
+            ConstraintViolationException e) {
+        return generateErrorResponse(ErrorCode.INVALID_PARAMETER,
+                new InvalidParameterException(e.getMessage()));
     }
 
     private ResponseEntity<ErrorResponse> generateErrorResponse(ErrorCode errorCode, Exception e) {
