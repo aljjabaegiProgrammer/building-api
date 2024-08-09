@@ -26,21 +26,12 @@ public class MemberServiceImpl implements MemberService {
     public MemberSearchResponse getMemberById(String memberId) {
         Member memberEntity = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("회원 ID 가 존재하지 않습니다. -> " + memberId));
-
         return memberMapper.toRecord(memberEntity);
     }
 
     @Override
     public List<MemberSearchResponse> getMembers() {
-        return memberRepository.findAll().stream()
-                .map(memberEntity -> MemberSearchResponse.builder()
-                        .memberId(memberEntity.getMemberId())
-                        .memberName(memberEntity.getMemberName())
-                        .useYn(memberEntity.getUseYn())
-                        .createDate(memberEntity.getCreateDate())
-                        .updateDate(memberEntity.getUpdateDate())
-                        .build())
-                .toList();
+        return memberMapper.toRecordList(memberRepository.findAll());
     }
 
     @Override
