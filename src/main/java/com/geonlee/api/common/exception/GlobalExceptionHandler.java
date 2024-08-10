@@ -59,8 +59,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleConstraintViolation(
-            ConstraintViolationException e) {
+    public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException e) {
         return generateErrorResponse(ErrorCode.INVALID_PARAMETER,
                 new InvalidParameterException(e.getMessage()));
     }

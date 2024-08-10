@@ -1,5 +1,6 @@
 package com.geonlee.api.domin.member.record;
 
+import com.geonlee.api.domin.member.validation.MemberValidationGroup;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
@@ -12,7 +13,7 @@ public record MemberCreateRequest(
         String memberId,
         String password,
         String useYn,
-        @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "이름은 한글/영문만 가능합니다.")
+        @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "이름은 한글/영문만 가능합니다.", groups = MemberValidationGroup.User.class)
         String memberName
 ) {
 }
