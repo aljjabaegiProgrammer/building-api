@@ -2,10 +2,7 @@ package com.geonlee.api.entity;
 
 import com.geonlee.api.domin.member.record.MemberModifyRequest;
 import com.geonlee.api.entity.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -25,7 +25,20 @@ server:
       charset: utf-8
       enabled: true
       force: true
-
+springdoc: #https://springdoc.org/properties.html
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+    display-operation-id: true
+    filter: true
+    try-it-out-enabled: false
 ---
 spring:
   config:
@@ -41,9 +54,12 @@ spring:
       maximum-pool-size: 2
   jpa:
     show-sql: true
-
 ---
 spring:
   config:
     activate:
       on-profile: prod
+springdoc:
+  swagger-ui:
+    enabled: false
+    try-it-out-enabled: false

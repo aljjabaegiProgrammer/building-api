@@ -1,11 +1,20 @@
 package com.geonlee.api.domin.member;
 
 import com.geonlee.api.common.code.NormalCode;
+import com.geonlee.api.common.response.ErrorResponse;
 import com.geonlee.api.common.response.ItemResponse;
 import com.geonlee.api.common.response.ItemsResponse;
 import com.geonlee.api.config.message.MessageConfig;
 import com.geonlee.api.domin.member.record.*;
 import com.geonlee.api.domin.member.validation.MemberValidationGroup;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.groups.Default;
@@ -23,16 +32,39 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Validated({MemberValidationGroup.User.class})
+@Tag(name = "회원 관리", description = "회원에 대한 조회/추가/수정/삭제 기능")
+@RequestMapping("v1")
 public class MemberController {
 
     private final MemberService memberService;
     private final MessageConfig messageConfig;
 
     @GetMapping(value = "/members/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "회원 ID 로 회원 조회", description = """
+             ### MemberId 유효성 목록
+             - `영문, 숫자`만 조회
+             - 사용자의 경우 `최소 5자, 최대 30자`까지 전달 가능, `User group` 의 경우에만 체크
+            """,
+            parameters = {
+                    @Parameter(name = "memberId", description = "Member 를 조회하기 위한 ID를 입력", required = true)
+            }, operationId = "API-001-01")
+    @ApiResponses({
+            @ApiResponse(responseCode = "OK", description = "정상 응답", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "ERR_DT_01", description = "데이터가 존재하지 않음"
+                    , content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                            , examples = @ExampleObject(value = """
+                                    {
+                                        "status": "ERR_DT_01",
+                                        "message": "데이터가 존재하지 않습니다."
+                                    }
+                            """)
+                    )
+            )
+    })
     public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(
-                                                                            @PathVariable("memberId")
-                                                                            @Pattern (regexp = "^[zA-Z0-9]+$")
-                                                                            @Length(min = 5, max = 30, groups = MemberValidationGroup.User.class) String memberId) {
+            @PathVariable("memberId")
+            @Pattern(regexp = "^[zA-Z0-9]+$")
+            @Length(min = 5, max = 30, groups = MemberValidationGroup.User.class) String memberId) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<MemberSearchResponse>builder()
                         .status(messageConfig.getCode(NormalCode.SEARCH_SUCCESS))

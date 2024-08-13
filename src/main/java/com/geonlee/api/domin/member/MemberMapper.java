@@ -1,20 +1,26 @@
 package com.geonlee.api.domin.member;
 
+import com.geonlee.api.common.converter.Converter;
 import com.geonlee.api.common.mapStruct.GenericMapper;
 import com.geonlee.api.domin.member.record.MemberSearchResponse;
 import com.geonlee.api.entity.Member;
 import io.micrometer.common.util.StringUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 /**
  * @author GEONLEE
  * @since 2024-08-08
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = Converter.class)
 public interface MemberMapper extends GenericMapper<MemberSearchResponse, Member> {
-    @Mapping(target = "memberId", source = "memberId", qualifiedByName = "toUpperCase")
+    @Mappings({
+            @Mapping(target = "memberId", source = "memberId", qualifiedByName = "toUpperCase"),
+            @Mapping(target = "createDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getCreateDate()))"),
+            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
+    })
     MemberSearchResponse toRecord(Member entity);
 
     @Named("toUpperCase")
