@@ -52,13 +52,13 @@ public class MemberController {
             @ApiResponse(responseCode = "OK", description = "정상 응답", useReturnTypeSchema = true),
             @ApiResponse(responseCode = "ERR_DT_01", description = "데이터가 존재하지 않음"
                     , content = @Content(schema = @Schema(implementation = ErrorResponse.class)
-                            , examples = @ExampleObject(value = """
-                                    {
-                                        "status": "ERR_DT_01",
-                                        "message": "데이터가 존재하지 않습니다."
-                                    }
-                            """)
-                    )
+                    , examples = @ExampleObject(value = """
+                            {
+                                "status": "ERR_DT_01",
+                                "message": "데이터가 존재하지 않습니다."
+                            }
+                    """)
+            )
             )
     })
     public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(
@@ -73,6 +73,9 @@ public class MemberController {
                         .build());
     }
 
+    @Operation(summary = "전체 회원 조회", description = """
+             ### No Argument
+            """, operationId = "API-001-02")
     @GetMapping(value = "/members", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ItemsResponse<MemberSearchResponse>> getMembers() {
         return ResponseEntity.ok()
@@ -85,6 +88,12 @@ public class MemberController {
 
     @PostMapping(value = "/member"
             , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "회원 추가", description = """
+             ### 유효성 목록
+             - `User group` 의 경우에만 체크
+             - 필수 필드 -> memberId
+             - 이름은 영문/한글 만 가능
+            """, operationId = "API-001-03")
     public ResponseEntity<ItemResponse<MemberCreateResponse>> createMember(@RequestBody
                                                                            @Validated({Default.class, MemberValidationGroup.User.class})
                                                                            @Valid MemberCreateRequest parameter) {
@@ -98,7 +107,13 @@ public class MemberController {
 
     @PutMapping(value = "/member"
             , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemResponse<MemberModifyResponse>> modifyMember(@RequestBody MemberModifyRequest parameter) {
+    @Operation(summary = "회원 수정", description = """
+             ### 유효성 목록
+             - `User group` 의 경우에만 체크
+             - 필수 필드 -> memberId
+             - 이름은 영문/한글 만 가능
+            """, operationId = "API-001-04")
+    public ResponseEntity<ItemResponse<MemberModifyResponse>> modifyMember(@RequestBody  @Valid MemberModifyRequest parameter) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<MemberModifyResponse>builder()
                         .status(messageConfig.getCode(NormalCode.MODIFY_SUCCESS))
@@ -108,6 +123,11 @@ public class MemberController {
     }
 
     @DeleteMapping(value = "/member/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "회원 삭제", description = """
+            """,
+            parameters = {
+                    @Parameter(name = "memberId", description = "Member 를 삭제하기 위한 ID를 입력", required = true)
+            }, operationId = "API-001-05")
     public ResponseEntity<ItemResponse<Long>> deleteMember(@PathVariable("memberId") String memberId) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<Long>builder()
