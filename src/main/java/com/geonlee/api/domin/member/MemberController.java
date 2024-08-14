@@ -63,7 +63,7 @@ public class MemberController {
     })
     public ResponseEntity<ItemResponse<MemberSearchResponse>> getMemberById(
             @PathVariable("memberId")
-            @Pattern(regexp = "^[zA-Z0-9]+$")
+            @Pattern(regexp = "^[a-zA-Z0-9]+$")
             @Length(min = 5, max = 30, groups = MemberValidationGroup.User.class) String memberId) {
         return ResponseEntity.ok()
                 .body(ItemResponse.<MemberSearchResponse>builder()
