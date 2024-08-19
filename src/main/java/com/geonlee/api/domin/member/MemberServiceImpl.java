@@ -1,11 +1,12 @@
 package com.geonlee.api.domin.member;
 
+import com.geonlee.api.domin.authority.AuthorityRepository;
 import com.geonlee.api.domin.member.record.*;
+import com.geonlee.api.entity.Authority;
 import com.geonlee.api.entity.Member;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final AuthorityRepository authorityRepository;
 
     private final MemberMapper memberMapper;
 
@@ -39,20 +41,16 @@ public class MemberServiceImpl implements MemberService {
         if (memberRepository.existsById(parameter.memberId())) {
             throw new EntityExistsException("이미 존재하는 ID 입니다. -> " + parameter.memberId());
         }
-        Member newMember = Member.builder()
-                .memberId(parameter.memberId())
-                .password(parameter.password())
-                .memberName(parameter.memberName())
-                .useYn(parameter.useYn())
-                .build();
+        Authority authorityEntity = authorityRepository.findById(parameter.authorityCode())
+                .orElseThrow(() -> new EntityNotFoundException(
+                                "권한코드가 존재하지 않습니다. -> " + parameter.authorityCode()
+                        )
+                );
+        Member newMember = memberMapper.toEntity(parameter);
+        newMember.setAuthority(authorityEntity);
+        authorityEntity.getMembers().add(newMember);
         memberRepository.save(newMember);
-        return MemberCreateResponse.builder()
-                .memberId(newMember.getMemberId())
-                .memberName(newMember.getMemberName())
-                .useYn(newMember.getUseYn())
-                .createDate(newMember.getCreateDate())
-                .updateDate(newMember.getUpdateDate())
-                .build();
+        return memberMapper.toCreateRecord(newMember);
     }
 
     @Override
@@ -61,15 +59,13 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "수정할 회원 ID 가 존재하지 않습니다. -> " + parameter.memberId())
                 );
-        memberEntity.updateFromRecord(parameter);
+        Authority authorityEntity = authorityRepository.findById(parameter.authorityCode())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "수정할 권한코드가 존재하지 않습니다. -> " + parameter.authorityCode())
+                );
+        memberEntity.updateFromRecord(parameter, authorityEntity);
         memberRepository.saveAndFlush(memberEntity);
-        return MemberModifyResponse.builder()
-                .memberId(memberEntity.getMemberId())
-                .memberName(memberEntity.getMemberName())
-                .useYn(memberEntity.getUseYn())
-                .createDate(memberEntity.getCreateDate())
-                .updateDate(memberEntity.getUpdateDate())
-                .build();
+        return memberMapper.toModifyRecord(memberEntity);
     }
 
     @Override

@@ -36,8 +36,9 @@ public class Member extends BaseEntity implements Persistable<String> {
     @Column(name = "use_yn")
     private String useYn;
 
-    @Column(name = "authority_cd")
-    private String authorityCode;
+    @ManyToOne
+    @JoinColumn(name = "authority_cd")
+    private Authority authority;
 
     @Override
     public String getId() {
@@ -49,8 +50,13 @@ public class Member extends BaseEntity implements Persistable<String> {
         return getCreateDate() == null;
     }
 
-    public void updateFromRecord(MemberModifyRequest parameter) {
+    public void updateFromRecord(MemberModifyRequest parameter, Authority authority) {
         this.memberName = parameter.memberName();
         this.useYn = parameter.useYn();
+        this.authority = authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 }

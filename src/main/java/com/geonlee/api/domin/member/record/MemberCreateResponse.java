@@ -1,10 +1,7 @@
 package com.geonlee.api.domin.member.record;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-
-import java.time.LocalDateTime;
 
 /**
  * @author GEONLEE
@@ -19,11 +16,11 @@ public record MemberCreateResponse(
         String memberName,
         @Schema(description = "사용 여부", example = "Y")
         String useYn,
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @Schema(description = "권한 명", example = "ROLE_ADMIN")
+        String authorityName,
         @Schema(description = "생성 일시", example = "2024-08-13 00:00:00")
-        LocalDateTime createDate,
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        String createDate,
         @Schema(description = "수정 일시", example = "2024-08-13 00:00:00")
-        LocalDateTime updateDate
+        String updateDate
 ) {
 }

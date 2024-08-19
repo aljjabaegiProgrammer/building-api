@@ -1,14 +1,14 @@
 package com.geonlee.api.entity;
 
 import com.geonlee.api.entity.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Authority Entity
@@ -30,4 +30,7 @@ public class Authority extends BaseEntity {
 
     @Column(name = "authority_nm")
     private String authorityName;
+
+    @OneToMany(mappedBy = "authority")
+    private Set<Member> members = new HashSet<>();
 }

@@ -1,6 +1,5 @@
 package com.geonlee.api.domin.member.record;
 
-import com.geonlee.api.domin.member.validation.MemberValidationGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -18,6 +17,9 @@ public record MemberModifyRequest(
         String useYn,
         @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "이름은 한글/영문만 가능합니다.")
         @Schema(description = "회원 명", example = "이건")
-        String memberName
+        String memberName,
+        @Pattern(regexp = "^[A-Z_]+$", message = "권한 코드가 올바르지 않습니다.")
+        @Schema(description = "권한 코드", example = "ROLE_ADMIN")
+        String authorityCode
 ) {
 }
