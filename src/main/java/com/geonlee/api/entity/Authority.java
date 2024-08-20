@@ -31,6 +31,6 @@ public class Authority extends BaseEntity {
     @Column(name = "authority_nm")
     private String authorityName;
 
-    @OneToMany(mappedBy = "authority")
+    @OneToMany(mappedBy = "authority", fetch = FetchType.LAZY)
     private Set<Member> members = new HashSet<>();
 }

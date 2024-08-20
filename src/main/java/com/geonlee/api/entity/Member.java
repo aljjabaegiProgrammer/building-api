@@ -36,7 +36,7 @@ public class Member extends BaseEntity implements Persistable<String> {
     @Column(name = "use_yn")
     private String useYn;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "authority_cd")
     private Authority authority;
 
