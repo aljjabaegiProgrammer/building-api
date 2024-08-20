@@ -1,5 +1,6 @@
 package com.geonlee.api.domin.member.record;
 
+import com.geonlee.api.entity.enumeration.UseYn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +15,7 @@ public record MemberModifyRequest(
         @NotEmpty
         String memberId,
         @Schema(description = "사용 여부", example = "Y")
-        String useYn,
+        UseYn useYn,
         @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "이름은 한글/영문만 가능합니다.")
         @Schema(description = "회원 명", example = "이건")
         String memberName,

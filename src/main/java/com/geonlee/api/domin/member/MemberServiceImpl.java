@@ -5,9 +5,12 @@ import com.geonlee.api.domin.member.record.*;
 import com.geonlee.api.entity.Authority;
 import com.geonlee.api.entity.Member;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,15 +27,25 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
 
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
+    @Transactional
     public MemberSearchResponse getMemberById(String memberId) {
         Member memberEntity = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("회원 ID 가 존재하지 않습니다. -> " + memberId));
+//        Member memberEntity = entityManager.createNamedQuery("member.findById", Member.class)
+//                .setParameter("memberId", memberId)
+//                .getSingleResult();
         return memberMapper.toRecord(memberEntity);
     }
 
     @Override
+    @Transactional
     public List<MemberSearchResponse> getMembers() {
+//        return memberMapper.toRecordList(entityManager.createNamedQuery("member.findAll", Member.class).getResultList());
         return memberMapper.toRecordList(memberRepository.findAll());
     }
 

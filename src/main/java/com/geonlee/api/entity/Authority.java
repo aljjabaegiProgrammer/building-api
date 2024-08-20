@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DialectOverride;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,5 +35,7 @@ public class Authority extends BaseEntity {
     private String authorityName;
 
     @OneToMany(mappedBy = "authority", fetch = FetchType.LAZY)
+    @OrderBy("memberName asc")
+    @BatchSize(size = 4)
     private Set<Member> members = new HashSet<>();
 }
