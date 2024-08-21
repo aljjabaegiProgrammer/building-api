@@ -38,7 +38,7 @@ public class AuthorityController {
     private final AuthorityService authorityService;
 
     @GetMapping(value = "/authorities/{authorityCd}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "권한 코드로 회원 조회", description = """
+    @Operation(summary = "권한 코드로 조회", description = """
              ### authorityCd 유효성 목록
              - `영문, 특수문자('_')`만 가능
              - `최소 5자, 최대 20자`까지 전달 가능
@@ -71,7 +71,7 @@ public class AuthorityController {
                         .build());
     }
 
-    @Operation(summary = "전체 회원 조회", description = """
+    @Operation(summary = "전체 권한 조회", description = """
              ### No Argument
             """, operationId = "API-002-02")
     @GetMapping(value = "/authorities", produces = MediaType.APPLICATION_JSON_VALUE)

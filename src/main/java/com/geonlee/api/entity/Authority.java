@@ -36,6 +36,6 @@ public class Authority extends BaseEntity {
 
     @OneToMany(mappedBy = "authority", fetch = FetchType.LAZY)
     @OrderBy("memberName asc")
-    @BatchSize(size = 4)
+//    @BatchSize(size = 4)
     private Set<Member> members = new HashSet<>();
 }
