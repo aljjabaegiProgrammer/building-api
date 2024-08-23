@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.springframework.data.domain.Persistable;
 
 /**
@@ -43,6 +42,11 @@ import org.springframework.data.domain.Persistable;
                 @NamedAttributeNode("authority")
         }
 )
+//@NamedNativeQuery(
+//        name = "Member.findByName",
+//        query = "SELECT * FROM member WHERE member_nm = :memberName",
+//        resultClass = Member.class
+//)
 public class Member extends BaseEntity implements Persistable<String> {
 
     @Id

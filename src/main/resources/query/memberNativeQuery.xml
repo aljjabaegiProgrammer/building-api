@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                                     http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+    <named-native-query name="Member.findByMemberName" result-set-mapping="MemberResultMap">
+        <query>
+            SELECT t1.member_id as memberId
+                 , t1.member_nm as memberName
+                 , t1.use_yn as useYn
+                 , t2.authority_nm as authorityName
+                 , TO_CHAR(t1.create_dt, 'YYYY-MM-DD HH24:MI:SS') as createDate
+                 , TO_CHAR(t1.update_dt, 'YYYY-MM-DD HH24:MI:SS') as updateDate
+            FROM member t1
+            LEFT JOIN authority t2 ON (t2.authority_cd = t1.authority_cd)
+            WHERE member_nm = :memberName
+        </query>
+    </named-native-query>
+
+    <sql-result-set-mapping name="MemberResultMap">
+        <constructor-result
+                target-class="com.geonlee.api.domin.member.record.MemberSearchResponse">
+            <column name="memberId" class="java.lang.String"/>
+            <column name="memberName" class="java.lang.String"/>
+            <column name="useYn" class="java.lang.String"/>
+            <column name="authorityName" class="java.lang.String"/>
+            <column name="createDate" class="java.lang.String"/>
+            <column name="updateDate" class="java.lang.String"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+</entity-mappings>

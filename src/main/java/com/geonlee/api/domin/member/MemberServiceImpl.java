@@ -2,8 +2,11 @@ package com.geonlee.api.domin.member;
 
 import com.geonlee.api.domin.authority.AuthorityRepository;
 import com.geonlee.api.domin.member.record.*;
+import com.geonlee.api.domin.member.repository.MemberJPQLRepository;
+import com.geonlee.api.domin.member.repository.MemberQueryMethodRepository;
 import com.geonlee.api.entity.Authority;
 import com.geonlee.api.entity.Member;
+import com.geonlee.api.entity.enumeration.UseYn;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,11 +25,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberRepository memberRepository;
+    private final MemberJPQLRepository memberRepository;
     private final AuthorityRepository authorityRepository;
 
     private final MemberMapper memberMapper;
-
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -46,6 +48,11 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public List<MemberSearchResponse> getMembers() {
 //        return memberMapper.toRecordList(entityManager.createNamedQuery("member.findAll", Member.class).getResultList());
+//        List<Member> memberList = entityManager.createQuery("select m from member m where m.memberId = :memberId").setParameter("memberId", "member01").getResultList();
+        List<MemberSearchResponse> members = memberRepository.findMembersByMemberName("이건");
+
+        List<MemberSearchResponse> memberSearchResponseList = memberRepository.getMemberToRecord("이건");
+
         return memberMapper.toRecordList(memberRepository.findAll());
     }
 

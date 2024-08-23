@@ -22,13 +22,13 @@ public interface AuthorityMapper extends GenericMapper<AuthoritySearchResponse, 
     @Mappings({
             @Mapping(target = "authorityName", source = "authority.authorityName"),
             @Mapping(target = "createDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getCreateDate()))"),
-            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
+//            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
     })
     MemberSearchResponse toMemberRecord(Member entity);
 
     @Mappings({
             @Mapping(target = "createDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getCreateDate()))"),
-            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
+//            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
     })
     AuthoritySearchResponse toRecord(Authority entity);
 }

@@ -23,7 +23,7 @@ public interface MemberMapper extends GenericMapper<MemberSearchResponse, Member
             @Mapping(target = "memberId", source = "memberId", qualifiedByName = "toUpperCase"),
             @Mapping(target = "authorityName", source = "authority.authorityName"),
             @Mapping(target = "createDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getCreateDate()))"),
-            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
+//            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
     })
     MemberSearchResponse toRecord(Member entity);
 
@@ -32,7 +32,7 @@ public interface MemberMapper extends GenericMapper<MemberSearchResponse, Member
             @Mapping(target = "memberId", source = "memberId", qualifiedByName = "toUpperCase"),
             @Mapping(target = "authorityName", source = "authority.authorityName"),
             @Mapping(target = "createDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getCreateDate()))"),
-            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
+//            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
     })
     MemberCreateResponse toCreateRecord(Member entity);
 
@@ -40,7 +40,7 @@ public interface MemberMapper extends GenericMapper<MemberSearchResponse, Member
             @Mapping(target = "memberId", source = "memberId", qualifiedByName = "toUpperCase"),
             @Mapping(target = "authorityName", source = "authority.authorityName"),
             @Mapping(target = "createDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getCreateDate()))"),
-            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
+//            @Mapping(target = "updateDate", expression = "java(Converter.localDateTimeToFormattedString(entity.getUpdateDate()))")
     })
     MemberModifyResponse toModifyRecord(Member entity);
 
