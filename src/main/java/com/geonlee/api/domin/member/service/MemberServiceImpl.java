@@ -1,12 +1,12 @@
-package com.geonlee.api.domin.member;
+package com.geonlee.api.domin.member.service;
 
 import com.geonlee.api.domin.authority.AuthorityRepository;
+import com.geonlee.api.domin.member.MemberMapper;
+import com.geonlee.api.domin.member.MemberService;
 import com.geonlee.api.domin.member.record.*;
 import com.geonlee.api.domin.member.repository.MemberJPQLRepository;
-import com.geonlee.api.domin.member.repository.MemberQueryMethodRepository;
 import com.geonlee.api.entity.Authority;
 import com.geonlee.api.entity.Member;
-import com.geonlee.api.entity.enumeration.UseYn;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,6 +42,11 @@ public class MemberServiceImpl implements MemberService {
 //                .setParameter("memberId", memberId)
 //                .getSingleResult();
         return memberMapper.toRecord(memberEntity);
+    }
+
+    @Override
+    public List<MemberSearchResponse> getMembersByMemberName(String memberName) {
+        return null;
     }
 
     @Override

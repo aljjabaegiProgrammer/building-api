@@ -1,7 +1,6 @@
 package com.geonlee.api.domin.member.repository;
 
 import com.geonlee.api.domin.member.record.MemberSearchResponse;
-import com.geonlee.api.domin.member.record.MemberTest;
 import com.geonlee.api.entity.Member;
 import com.geonlee.api.entity.enumeration.UseYn;
 import jakarta.annotation.Nonnull;

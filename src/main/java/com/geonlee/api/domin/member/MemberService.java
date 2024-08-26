@@ -12,6 +12,8 @@ import java.util.List;
 public interface MemberService {
     MemberSearchResponse getMemberById(String memberId);
 
+    List<MemberSearchResponse> getMembersByMemberName(String memberName);
+
     List<MemberSearchResponse> getMembers();
 
     @Transactional
