@@ -38,7 +38,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * */
 //@SQLRestriction("use_yn = 'Y'")
 @NamedEntityGraph(
-        name = "Member_graph",
+        name = "memberGraph",
         attributeNodes = {
                 @NamedAttributeNode("authority")
         }

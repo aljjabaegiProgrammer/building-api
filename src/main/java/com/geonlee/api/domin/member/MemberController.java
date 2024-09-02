@@ -6,8 +6,9 @@ import com.geonlee.api.common.response.ItemResponse;
 import com.geonlee.api.common.response.ItemsResponse;
 import com.geonlee.api.config.message.MessageConfig;
 import com.geonlee.api.domin.member.record.*;
+import com.geonlee.api.domin.member.service.MemberQueryDslServiceImpl;
 import com.geonlee.api.domin.member.service.MemberServiceCriteriaImpl;
-import com.geonlee.api.domin.member.service.MemberSpecificationService;
+import com.geonlee.api.domin.member.service.MemberSpecificationServiceImpl;
 import com.geonlee.api.domin.member.validation.MemberValidationGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,8 +39,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("v1")
 public class MemberController {
 
-    private final MemberServiceCriteriaImpl memberService;
-    private final MemberSpecificationService memberSpecificationService;
+    private final MemberQueryDslServiceImpl memberService;
+    private final MemberSpecificationServiceImpl memberSpecificationService;
     private final MessageConfig messageConfig;
 
     @GetMapping(value = "/members/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,7 +86,8 @@ public class MemberController {
                 .body(ItemsResponse.<MemberSearchResponse>builder()
                         .status(messageConfig.getCode(NormalCode.SEARCH_SUCCESS))
                         .message(messageConfig.getMessage(NormalCode.SEARCH_SUCCESS))
-                        .items(memberSpecificationService.getMemberOrderByMemberNameAscWithPagingSlice())
+//                        .items(memberSpecificationService.getMemberOrderByMemberNameAscWithPagingSlice())
+                        .items(memberService.getMembers())
                         .build());
     }
 

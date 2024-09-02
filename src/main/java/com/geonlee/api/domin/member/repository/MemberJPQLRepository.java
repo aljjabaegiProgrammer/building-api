@@ -23,6 +23,9 @@ public interface MemberJPQLRepository extends JpaRepository<Member, String> {
     @Nonnull
     List<Member> findAll();
 
+    @Query("select m from member m where m.memberId = :memberId")
+    Member findMemberById(@Param("memberId") String memberId);
+
     @Query(value = "select m from member m where m.memberId = :memberId")
     Member findByMemberId(String memberId);
 

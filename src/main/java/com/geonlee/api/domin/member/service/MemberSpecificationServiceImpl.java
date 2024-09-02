@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class MemberSpecificationService {
+public class MemberSpecificationServiceImpl {
 
     private final MemberSpecificationRepository memberRepository;
     private final MemberMapper memberMapper = Mappers.getMapper(MemberMapper.class);
@@ -28,6 +28,13 @@ public class MemberSpecificationService {
         List<Member> members = memberRepository.findAll(
                 MemberSpecification.memberId(memberId)
                         .and(MemberSpecification.memberName(memberName))
+        );
+        return memberMapper.toRecordList(members);
+    }
+
+    public List<MemberSearchResponse> getMemberById(String memberId) {
+        List<Member> members = memberRepository.findAll(
+                MemberSpecification.memberId(memberId)
         );
         return memberMapper.toRecordList(members);
     }
