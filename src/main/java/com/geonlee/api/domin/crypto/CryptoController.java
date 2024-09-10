@@ -1,12 +1,12 @@
-package com.geonlee.api.domin.rsa;
+package com.geonlee.api.domin.crypto;
 
 import com.geonlee.api.common.code.NormalCode;
 import com.geonlee.api.common.encryption.CryptoService;
-import com.geonlee.api.common.encryption.aes.AesCryptoService;
-import com.geonlee.api.common.encryption.rsa.RsaCryptoService;
+import com.geonlee.api.common.encryption.hybrid.HybridCryptoService;
 import com.geonlee.api.common.response.ItemResponse;
 import com.geonlee.api.config.message.MessageConfig;
-import com.geonlee.api.domin.rsa.record.PublicKeyResponse;
+import com.geonlee.api.domin.crypto.record.HybridKeyResponse;
+import com.geonlee.api.domin.crypto.record.PublicKeyResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,7 @@ import java.util.Base64;
 public class CryptoController {
     private final CryptoService rsaCryptoService;
     private final CryptoService aesCryptoService;
+    private final HybridCryptoService hybridCryptoService;
     private final MessageConfig messageConfig;
 
     @Operation(summary = "RSA Public Key 요청", description = """
@@ -60,6 +61,30 @@ public class CryptoController {
                         .status(messageConfig.getCode(NormalCode.SEARCH_SUCCESS))
                         .message(messageConfig.getMessage(NormalCode.SEARCH_SUCCESS))
                         .item(publicKeyResponse)
+                        .build());
+    }
+
+    @Operation(summary = "Hybrid Key 요청", description = """
+            Hybrid key<br />
+            RSA public key 와 RSA public key 로 암호화된 AES key 를 전달. (Base64 encoded)<br />
+            
+            전달받은 RSA Public key 로 암호화된 AES 키를 복호화 하고,<br />
+            복호화된 AES key 로 데이터를 암호화 하여 전송
+            """, operationId = "API-999-03")
+    @PostMapping(value = "/key/hybrid", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ItemResponse<HybridKeyResponse>> getHybridKey() {
+        PublicKey publicKey = (PublicKey) this.hybridCryptoService.getPublicKey();
+        String publicKeyString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
+        String encryptedAesKey = this.hybridCryptoService.getEncryptedAesKey();
+        HybridKeyResponse hybridKeyResponse = HybridKeyResponse.builder()
+                .publicKey(publicKeyString)
+                .encryptedKey(encryptedAesKey)
+                .build();
+        return ResponseEntity.ok()
+                .body(ItemResponse.<HybridKeyResponse>builder()
+                        .status(messageConfig.getCode(NormalCode.SEARCH_SUCCESS))
+                        .message(messageConfig.getMessage(NormalCode.SEARCH_SUCCESS))
+                        .item(hybridKeyResponse)
                         .build());
     }
 }

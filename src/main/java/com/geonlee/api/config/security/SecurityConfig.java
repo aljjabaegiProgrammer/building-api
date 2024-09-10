@@ -34,7 +34,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    public static final String[] ignoreUris = {"/v1/login", "/v1/key/rsa", "/v1/key/aes"};
+    public static final String[] ignoreUris = {"/v1/login", "/v1/key/rsa", "/v1/key/aes", "/v1/key/hybrid"};
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;

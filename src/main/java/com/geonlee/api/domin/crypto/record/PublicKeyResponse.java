@@ -1,4 +1,4 @@
-package com.geonlee.api.domin.rsa.record;
+package com.geonlee.api.domin.crypto.record;
 
 import lombok.Builder;
 
