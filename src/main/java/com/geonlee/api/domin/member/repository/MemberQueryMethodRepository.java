@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author GEONLEE
@@ -19,10 +20,9 @@ import java.util.List;
 @Repository
 public interface MemberQueryMethodRepository extends JpaRepository<Member, String> {
 
-    @EntityGraph(value = "Member_graph")
+    @EntityGraph(value = "memberGraph")
     @Nonnull
     List<Member> findAll();
-
     // memberName 으로 조회
     List<Member> findByMemberName(String memberName);
 

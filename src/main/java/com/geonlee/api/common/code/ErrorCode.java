@@ -10,7 +10,10 @@ public enum ErrorCode implements ResponseCode {
     INVALID_PARAMETER("ERR_CE_01"),
     NO_DATA("ERR_DT_01"),
     EXISTS_DATA("ERR_DT_02"),
-    SQL_ERROR("ERR_SQ_01");
+    SQL_ERROR("ERR_SQ_01"),
+    NOT_AUTHENTICATION("ERR_AT_01"),
+    FORBIDDEN("ERR_AT_02"),
+    EXPIRED_TOKEN("ERR_AT_03");
 
     private final String code;
 

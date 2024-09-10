@@ -2,6 +2,8 @@ package com.geonlee.api.domin.member.service;
 
 import com.geonlee.api.common.code.ErrorCode;
 import com.geonlee.api.common.exception.custom.ServiceException;
+import com.geonlee.api.config.jwt.TokenProvider;
+import com.geonlee.api.config.jwt.record.TokenResponse;
 import com.geonlee.api.domin.member.MemberMapper;
 import com.geonlee.api.domin.member.MemberService;
 import com.geonlee.api.domin.member.record.*;
@@ -16,6 +18,8 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +35,7 @@ public class MemberQueryDslServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper = Mappers.getMapper(MemberMapper.class);
     private final MemberQueryMethodRepository memberQueryMethodRepository;
+    private final TokenProvider tokenProvider;
     @PersistenceContext
     private EntityManager entityManager;
 

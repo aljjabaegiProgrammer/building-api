@@ -39,6 +39,27 @@ springdoc: #https://springdoc.org/properties.html
     display-operation-id: true
     filter: true
     try-it-out-enabled: false
+jwt:
+  auth-key: ${jwt-key}
+  cookie-token-name: "GN_AUT"
+rsa:
+  algorithm: RSA
+  key-size: 2048
+  public: ${rsa-public}
+  private: ${rsa-private}
+aes:
+  algorithm: AES
+  key-size: 128
+  secret: ${aes-key}
+  mode: AES/CBC/PKCS5Padding
+  iv-size: 16
+
+pdkdf2:
+  key: geonny.log
+  salt-length: 16
+  iterations: 256
+  algorithm: PBKDF2WithHmacSHA256
+
 ---
 spring:
   config:

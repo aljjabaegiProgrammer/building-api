@@ -1,5 +1,6 @@
 package com.geonlee.api.common.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Builder;
 public record ErrorResponse(
         String status,
         String message,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         String detailMessage
 ) {
 }
